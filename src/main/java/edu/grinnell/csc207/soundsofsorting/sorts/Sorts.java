@@ -3,7 +3,6 @@ package edu.grinnell.csc207.soundsofsorting.sorts;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import edu.grinnell.csc207.soundsofsorting.sortevents.CompareEvent;
 import edu.grinnell.csc207.soundsofsorting.sortevents.CopyEvent;
@@ -121,8 +120,8 @@ public class Sorts {
         arrList.add (new CopyEvent<>());//compare event
         int index = b1;
         while (b1 < e1 && b2 < e2) {
+            arrList.add (new CompareEvent<>());//compare event
             if (arr[b1].compareTo(arr[b2]) < 0) {
-                arrList.add (new CompareEvent<>());//compare event
                 copy[index] = arr[b1];
                 b1++;
             } else {
@@ -186,8 +185,8 @@ public class Sorts {
             return;
         }
         if (begin == end - 2) {
+            arrList.add (new CompareEvent<>());//compare event
             if (arr[begin].compareTo(arr[end - 1]) > 0) {
-                arrList.add (new CompareEvent<>());//compare event
                 swap(arr, begin, end - 1);
                 arrList.add (new SwapEvent<>());//swap event
 
@@ -196,27 +195,28 @@ public class Sorts {
         }
         int middle = begin + (end - begin) / 2;
         int pivIdx;
-
+        arrList.add (new CompareEvent<>());//compare event
         if (arr[begin].compareTo(arr[middle]) > 0) { // begin > middle
             arrList.add (new CompareEvent<>());//compare event
             if (arr[middle].compareTo(arr[end - 1]) > 0) { // middle > end
-                arrList.add (new CompareEvent<>());//compare event
                 pivIdx = middle;
-            } else if (arr[middle].compareTo(arr[end - 1]) < 0 && arr[begin].compareTo(arr[end - 1]) > 0) { // middle < end and begin > end a.k.a. middle < end < begin
-                arrList.add (new CompareEvent<>());//compare event
-                arrList.add (new CompareEvent<>());//compare event
+            }
+            arrList.add (new CompareEvent<>());//compare event
+            arrList.add (new CompareEvent<>());//compare event 
+            if (arr[middle].compareTo(arr[end - 1]) < 0 && arr[begin].compareTo(arr[end - 1]) > 0) { // middle < end and begin > end a.k.a. middle < end < begin
                 pivIdx = end - 1;
             } else {
                 pivIdx = begin;
             }
         }
         else { // begin < middle
+            arrList.add (new CompareEvent<>());//compare event
             if (arr[middle].compareTo(arr[end - 1]) < 0) { // middle < end
-                arrList.add (new CompareEvent<>());//compare event
                 pivIdx = middle;
-            } else if (arr[middle].compareTo(arr[end - 1]) > 0 && arr[begin].compareTo(arr[end - 1]) > 0) { // middle > end and begin > end a.k.a. end < begin < middle
-                arrList.add (new CompareEvent<>());//compare event
-                arrList.add (new CompareEvent<>());//compare event
+            } 
+            arrList.add (new CompareEvent<>());//compare event
+            arrList.add (new CompareEvent<>());//compare event
+            if (arr[middle].compareTo(arr[end - 1]) > 0 && arr[begin].compareTo(arr[end - 1]) > 0) { // middle > end and begin > end a.k.a. end < begin < middle
                 pivIdx = begin;
             } else {
                 pivIdx = end - 1;
@@ -231,18 +231,17 @@ public class Sorts {
         int rIdx = pivIdx - 1;
 
         while (lIdx < rIdx) { // while Left index is on the left of the Right index
-
+            arrList.add (new CompareEvent<>());//compare event
             while (lIdx < rIdx && arr[lIdx].compareTo(pivot) <= 0) {
-                arrList.add (new CompareEvent<>());//compare event
                 lIdx++;
             }
+            arrList.add (new CompareEvent<>());//compare event
             while (lIdx < rIdx && arr[rIdx].compareTo(pivot) >= 0){
-                arrList.add (new CompareEvent<>());//compare event
                 rIdx--;
             }
+            arrList.add (new CompareEvent<>());//compare event
+            arrList.add (new CompareEvent<>());//compare event
             if (arr[lIdx].compareTo(pivot) > 0 && arr[rIdx].compareTo(pivot) < 0) {
-                arrList.add (new CompareEvent<>());//compare event
-                arrList.add (new CompareEvent<>());//compare event
                 swap(arr, lIdx, rIdx);
                 arrList.add (new SwapEvent<>());//swap event
             }
@@ -271,15 +270,20 @@ public class Sorts {
 
      public static <T extends Comparable<? super T>> List<SortEvent<T>> bogoSort(T[] arr) {
         List <SortEvent<T>> arrList = new  ArrayList <> ();
-        boolean isSorted = false;
-        while(isSorted == false){
+        while(true){
+            boolean isSorted = true;
             for(int i = 0; i < arr.length-1; i++){
-                if(arr[i].compareTo(arr[i+1]) < 0){
+                arrList.add (new CompareEvent<>());//compare event
+                if(arr[i].compareTo(arr[i+1]) > 0){
                     isSorted = false;
                 }
             }
-            for(int i = 0; i < arr.length-1; i++){
-                arr[i] = arr[Random(arr.length-1)];
+            if(isSorted){
+                break;
+            }
+            for(int i = 0; i < arr.length; i++){
+                swap(arr, i, (int) (Math.random() * (i+1)));
+                arrList.add (new SwapEvent<>());//swap event
             }
         }
         return arrList;
