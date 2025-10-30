@@ -249,8 +249,8 @@ public class Sorts {
         swap(arr, rIdx, pivIdx);
         arrList.add (new SwapEvent<>());//swap event
 
-        pivot(arr, begin, rIdx);
-        pivot(arr, rIdx + 1, end);
+        pivot(arr, begin, rIdx, arrList);
+        pivot(arr, rIdx + 1, end, arrList);
     }
 
     public static <T extends Comparable<? super T>> List<SortEvent<T>> quickSort(T[] arr) {
@@ -287,6 +287,14 @@ public class Sorts {
             }
         }
         return arrList;
+    }
+
+    public static <T> void eventSort(T[] l, List<SortEvent<T>> events){
+        for(int i = 0; i < events.size(); i++){
+            // if(events.get(i).equals(CopyEvent<T>)){
+            //    return;
+            // }
+        }
     }
 
 }
