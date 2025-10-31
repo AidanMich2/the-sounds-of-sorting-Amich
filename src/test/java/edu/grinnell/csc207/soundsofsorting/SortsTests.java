@@ -1,5 +1,6 @@
 package edu.grinnell.csc207.soundsofsorting;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.function.Consumer;
@@ -173,5 +174,13 @@ public class SortsTests {
     @Test
     public void testBogoSortEmpty() {
         testSortEmpty(Sorts::bogoSort);
+    }
+
+    @Test
+    public void testEventSort (){
+        Integer [] arr = {5,43,6,8,5,4,67};
+        Integer [] solved = {4,5,5,6,8,43,67};
+        Sorts.eventSort (arr, Sorts.bubbleSort (arr));
+        assertEquals (arr, solved);
     }
 }

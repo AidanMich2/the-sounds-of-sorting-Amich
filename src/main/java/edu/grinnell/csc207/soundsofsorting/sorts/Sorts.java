@@ -117,7 +117,6 @@ public class Sorts {
 
         // @SuppressWarnings("unchecked")
         T[] copy = Arrays.copyOf(arr, arr.length); 
-        arrList.add (new CopyEvent<>());//compare event
         int index = b1;
         while (b1 < e1 && b2 < e2) {
             if (arr[b1].compareTo(arr[b2]) < 0) {
@@ -143,6 +142,7 @@ public class Sorts {
 
         for (int i = 0; i < arr.length; i++) {
             arr[i] = copy[i];
+            arrList.add (new CopyEvent<>(i, copy[i]));//compare event
             //this might be a copy event
         }
 
