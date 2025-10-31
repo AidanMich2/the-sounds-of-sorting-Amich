@@ -40,10 +40,10 @@ public class Sorts {
         for (int i = 0; i < arr.length; i++) {
             for (int j = 0; j < arr.length - 1; j++) {
                 int compare = arr[j].compareTo(arr[j+1]);
-                arrList.add (new CompareEvent<>());//compare event
+                arrList.add (new CompareEvent<>(j, j+1));//compare event
                 if(compare > 0) {
                     swap(arr, j, j+1);
-                    arrList.add (new SwapEvent<>());//swap event
+                    arrList.add (new SwapEvent<>(j, j+1));//swap event
                 }
             }
         }
@@ -66,13 +66,13 @@ public class Sorts {
             int minIdx = i;
             for (int j = i; j < arr.length; j++) {
                 int compare = arr[j].compareTo(arr[minIdx]);
-                arrList.add (new CompareEvent<>());//compare event
+                arrList.add (new CompareEvent<>(j, minIdx));//compare event
                 if (compare < 0) {
                     minIdx = j;
                 }
             }
             swap(arr, i, minIdx);
-            arrList.add (new SwapEvent<>());//swap event
+            arrList.add (new SwapEvent<>(i, minIdx));//swap event
         }
         return arrList;
     }
@@ -92,14 +92,14 @@ public class Sorts {
         for (int i = 1; i < arr.length; i++) {
             for (int j = 0; j < i; j++) {
                 int compare = arr[j].compareTo(arr[i]);
-                arrList.add (new CompareEvent<>());//compare event
+                arrList.add (new CompareEvent<>(j,i));//compare event
                 if (compare >= 0) {
                     T curVal = arr[i];
                     for (int k = i; k > j; k--) {
                         arr[k] = arr[k-1];
                     }
                     arr[j] = curVal;
-                    arrList.add (new SwapEvent<>());//swap event
+                    arrList.add (new SwapEvent<>(j, i));//swap event
                 }
             }
         }
@@ -120,10 +120,10 @@ public class Sorts {
         arrList.add (new CopyEvent<>());//compare event
         int index = b1;
         while (b1 < e1 && b2 < e2) {
-            arrList.add (new CompareEvent<>());//compare event
             if (arr[b1].compareTo(arr[b2]) < 0) {
                 copy[index] = arr[b1];
                 b1++;
+                arrList.add (new CompareEvent<>(b1, b2));//compare event
             } else {
                 copy[index] = arr[b2];
                 b2++;
@@ -131,13 +131,11 @@ public class Sorts {
             index++;
         }
         while (b1 < e1) {
-            arrList.add (new CompareEvent<>());//compare event
             copy[index] = arr[b1];
             b1++;
             index++;
         }
         while (b2 < e2) {
-            arrList.add (new CompareEvent<>());//compare event
             copy[index] = arr[b2];
             b2++;
             index++;
@@ -145,6 +143,7 @@ public class Sorts {
 
         for (int i = 0; i < arr.length; i++) {
             arr[i] = copy[i];
+            //this might be a copy event
         }
 
     }
@@ -204,18 +203,18 @@ public class Sorts {
         int i = lo - 1;
         for (int j = lo; j < hi; j++) {
             if (arr[j].compareTo(pivot) <= 0) {
-                arrList.add (new CompareEvent<>());//compare event
+                arrList.add (new CompareEvent<>(j, hi));//compare event
                 i++;
                 T temp = arr[i]; 
                 arr[i] = arr[j]; 
                 arr[j] = temp;
-                arrList.add (new SwapEvent<>());//swap event
+                arrList.add (new SwapEvent<>(i, j));//swap event
             }
         }
         T temp = arr[i + 1]; 
         arr[i + 1] = arr[hi]; 
         arr[hi] = temp;
-        arrList.add (new SwapEvent<>());//swap event
+        arrList.add (new SwapEvent<>(i +1, hi));//swap event
         return i + 1;
     }
 
@@ -231,8 +230,8 @@ public class Sorts {
         while(true){
             boolean isSorted = true;
             for(int i = 0; i < arr.length-1; i++){
-                arrList.add (new CompareEvent<>());//compare event
                 if(arr[i].compareTo(arr[i+1]) > 0){
+                    arrList.add (new CompareEvent<>(i, i+1));//compare event
                     isSorted = false;
                 }
             }
@@ -240,18 +239,17 @@ public class Sorts {
                 break;
             }
             for(int i = 0; i < arr.length; i++){
-                swap(arr, i, (int) (Math.random() * (i+1)));
-                arrList.add (new SwapEvent<>());//swap event
+                int temp = (int) (Math.random() * (i+1));
+                swap(arr, i, temp);
+                arrList.add (new SwapEvent<>(i, temp));//swap event
             }
         }
         return arrList;
     }
 
-    public static <T> void eventSort(T[] l, List<SortEvent<T>> events){
-        for(int i = 0; i < events.size(); i++){
-            // if(events.get(i).equals(CopyEvent<T>)){
-            //    return;
-            // }
+    public static <T> void eventSort (T [] l, List<SortEvent<T>> events){
+        for (int i = 0; i < events.size (); i++){
+            events.get(i).apply(l);
         }
     }
 
