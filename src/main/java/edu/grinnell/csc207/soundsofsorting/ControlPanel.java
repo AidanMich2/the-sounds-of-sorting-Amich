@@ -2,6 +2,7 @@ package edu.grinnell.csc207.soundsofsorting;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -135,10 +136,8 @@ public class ControlPanel extends JPanel {
                 }
                 isSorting = true;
                 
-                // TODO: fill me in!
-                // 1. Create the sorting events list
-                // 2. Add in the compare events to the end of the list
-                List<SortEvent<Integer>> events = new java.util.LinkedList<>();
+                Integer[] unsortedEvents = Arrays.copyOf(notes.getNotes(), notes.getNotes().length);
+                List<SortEvent<Integer>> events = generateEvents(sorts.getSelectedItem ().toString (), unsortedEvents);
                 
                 // NOTE: The Timer class repetitively invokes a method at a
                 //       fixed interval.  Here we are specifying that method
@@ -153,10 +152,15 @@ public class ControlPanel extends JPanel {
                     public void run() {
                         if (index < events.size()) {
                             SortEvent<Integer> e = events.get(index++);
-                            // TODO: fill me in!
                             // 1. Apply the next sort event.
+                            e.apply(notes.getNotes ());
+                            
                             // 3. Play the corresponding notes denoted by the
                             //    affected indices logged in the event.
+                            scale.playNote (e.getAffectedIndices ().get (0),e.isEmphasized());
+                            notes.highlightNote (e.getAffectedIndices().get (0));
+                            
+                            
                             // 4. Highlight those affected indices.
                             panel.repaint();
                         } else {
