@@ -3,35 +3,35 @@ package edu.grinnell.csc207.soundsofsorting.sortevents;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.grinnell.csc207.soundsofsorting.sorts.Sorts;
+
 /**
  * A <code>SwapEvent</code> logs a swap between two indices of the array.
  */
 public class SwapEvent<T> implements SortEvent<T>{
-    List <Integer> arr = new  ArrayList <> ();
+    List <Integer> arrList = new  ArrayList <> ();
 
 
-    public int i;
-    public int j;
+    // public int i;
+    // public int j;
 
     public SwapEvent (int i, int j){
-        arr.add (i);
-        arr.add (j);
+        arrList.add (i);
+        arrList.add (j);
     }
     /**
      * Applies this event to the array.
      * @param arr the array to modify
      */
     public void apply(T[] arr){
-        T temp = arr [i];
-        arr [i] = arr [j];
-        arr [j] = temp;
+        Sorts.swap(arr, arrList.get(0), arrList.get(1));
     }
 
     /**
      * @return a list of the indices affected by this event
      */
     public List<Integer> getAffectedIndices(){
-        return arr;
+        return arrList;
     }
 
     /**

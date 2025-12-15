@@ -13,16 +13,16 @@ public class CopyEvent<T> implements SortEvent<T>{
     public int index;
     public T value;
 
-    public CopyEvent (int index, T value){
-        arr.add (index);
-        this.value = value;
+    public CopyEvent (){
+        // arr.add (index);
+        // this.value = value;
     }
     /**
      * Applies this event to the array.
      * @param arr the array to modify
      */
     public void apply(T[] arr){
-        arr[index] = value;
+        // arr[index] = value;
     }
 
     /**

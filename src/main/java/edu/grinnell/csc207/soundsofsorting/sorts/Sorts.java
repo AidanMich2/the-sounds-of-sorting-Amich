@@ -98,19 +98,14 @@ public class Sorts {
      /**
      * obtained from lab work, acknowledge Reo.
      */
-    public static <T extends Comparable<? super T>> List<SortEvent<T>> insertionSort(
-            T[] arr) {
+    public static <T extends Comparable<? super T>> List<SortEvent<T>> insertionSort(T[] arr) {
         List <SortEvent<T>> arrList = new  ArrayList <> ();
-        for (int i = 1; i < arr.length; i++) {
-            for (int j = 0; j < i; j++) {
-                int compare = arr[j].compareTo(arr[i]);
+        for (int i = 1; i < arr.length; i++){
+            T temp = arr[i];
+            for(int j = 0; j < i; j++){
                 arrList.add (new CompareEvent<>(j,i));//compare event
-                if (compare >= 0) {
-                    T curVal = arr[i];
-                    for (int k = i; k > j; k--) {
-                        arr[k] = arr[k-1];
-                    }
-                    arr[j] = curVal;
+                if (temp.compareTo (arr[j]) < 0){
+                    swap (arr, i, j);
                     arrList.add (new SwapEvent<>(j, i));//swap event
                 }
             }
@@ -157,7 +152,7 @@ public class Sorts {
 
         for (int i = 0; i < arr.length; i++) {
             arr[i] = copy[i];
-            arrList.add (new CopyEvent<>(i, copy[i]));//compare event
+            arrList.add (new CopyEvent<>());//compare event
             //this might be a copy event
         }
 

@@ -30,24 +30,25 @@ public class ArrayPanel extends JPanel {
 
        int len = notes.getNotes ().length;
 
-       int barWidth = WIDTH / len;
-       int barHeight = HEIGHT / len;
+            int barWidth = WIDTH / len;
+            int barHeight = HEIGHT / len;
+
        g.setColor (Color.WHITE);
        g.fillRect(0, 0, WIDTH, HEIGHT);
        for (int i = 0; i < len; i++){
-            if (i % 4 == 0){
-                g.setColor (Color.RED);
+            if (notes.isHighlighted(i)) {
+                g.setColor(Color.MAGENTA);
+            } else if (i % 4 == 0){
+                g.setColor(Color.RED);
+            } else if(i % 4 == 1){
+                g.setColor(Color.GREEN);
+            } else if(i % 4 == 2){
+                g.setColor(Color.BLUE);
+            } else if(i % 4 == 3){
+                g.setColor(Color.YELLOW);
             }
-            else if(i % 4 == 1){
-                g.setColor (Color.GREEN);
-            }
-            else if(i % 4 == 2){
-                g.setColor (Color.BLUE);
-            }
-            else if(i % 4 == 3){
-                g.setColor (Color.YELLOW);
-            }
-            g.fillRect (i * barWidth, notes.getNotes () [i] * barHeight, barWidth, barHeight);
-       }
+            g.fillRect (i * barWidth, HEIGHT - ((notes.getNotes() [i] + 1) * barHeight), barWidth , (notes.getNotes() [i]+1) * barHeight);
+        }
+        notes.clearAllHighlighted();
     }
 }
