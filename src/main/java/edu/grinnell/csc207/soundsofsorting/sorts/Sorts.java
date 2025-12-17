@@ -129,10 +129,10 @@ public class Sorts {
         T[] copy = Arrays.copyOf(arr, arr.length); 
         int index = b1;
         while (b1 < e1 && b2 < e2) {
+            arrList.add (new CompareEvent<>(b1, b2));//compare event
             if (arr[b1].compareTo(arr[b2]) < 0) {
                 copy[index] = arr[b1];
                 b1++;
-                arrList.add (new CompareEvent<>(b1, b2));//compare event
             } else {
                 copy[index] = arr[b2];
                 b2++;
@@ -152,7 +152,7 @@ public class Sorts {
 
         for (int i = 0; i < arr.length; i++) {
             arr[i] = copy[i];
-            arrList.add (new CopyEvent<>());//compare event
+            arrList.add (new CopyEvent<>(i, arr[i]));
             //this might be a copy event
         }
 
