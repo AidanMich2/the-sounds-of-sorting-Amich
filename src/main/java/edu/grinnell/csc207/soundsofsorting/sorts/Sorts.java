@@ -215,8 +215,8 @@ public class Sorts {
         T pivot = arr[hi];
         int i = lo - 1;
         for (int j = lo; j < hi; j++) {
+            arrList.add (new CompareEvent<>(j, hi));//compare event
             if (arr[j].compareTo(pivot) <= 0) {
-                arrList.add (new CompareEvent<>(j, hi));//compare event
                 i++;
                 T temp = arr[i]; 
                 arr[i] = arr[j]; 
@@ -246,8 +246,8 @@ public class Sorts {
         while(true){
             boolean isSorted = true;
             for(int i = 0; i < arr.length-1; i++){
+                arrList.add (new CompareEvent<>(i, i+1));//compare event
                 if(arr[i].compareTo(arr[i+1]) > 0){
-                    arrList.add (new CompareEvent<>(i, i+1));//compare event
                     isSorted = false;
                 }
             }
